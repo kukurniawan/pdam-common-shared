@@ -7,14 +7,14 @@ namespace Pdam.Common.Shared.Fault
     {
         public HttpStatusCode StatusCode { get; }
 
-        public ApiException(HttpStatusCode status, string message, int resultErrorCode, string resultEventId = "0") : base(message)
+        public ApiException(HttpStatusCode status, string message, string resultErrorCode, string resultEventId = "0") : base(message)
         {
             StatusCode = status;
             ErrorCode = resultErrorCode;
             EventId = resultEventId;
         }
 
-        public ApiException(HttpStatusCode status, string message, int resultErrorCode, Exception innerException, string resultEventId = "0") : base(message, innerException)
+        public ApiException(HttpStatusCode status, string message, string resultErrorCode, Exception innerException, string resultEventId = "0") : base(message, innerException)
         {
             StatusCode = status;
             ErrorCode = resultErrorCode;
@@ -22,9 +22,9 @@ namespace Pdam.Common.Shared.Fault
 
         }
 
-        public int ErrorCode { get; set; }
+        public string ErrorCode { get; set; }
 
-        public ApiException(HttpStatusCode status, string message, int resultErrorCode, Exception innerException) : base(message, innerException)
+        public ApiException(HttpStatusCode status, string message, string resultErrorCode, Exception innerException) : base(message, innerException)
         {
             StatusCode = status;
             ErrorCode = resultErrorCode;

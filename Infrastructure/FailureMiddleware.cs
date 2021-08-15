@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Logging;
@@ -20,15 +21,15 @@ namespace Pdam.Common.Shared.Infrastructure
 
         public async Task Invoke(HttpContext context, IApiLogger logger)
         {
-            var currentBody = context.Response.Body;
-
-
             await using var memoryStream = new MemoryStream();
             context.Response.Body = memoryStream;
             ErrorDetail error = null;
             try
             {
                 await _next(context);
+            }
+            catch (DbUpdateConcurrencyException exception)
+            {
             }
             catch (ApiException apiException)
             {
@@ -46,7 +47,7 @@ namespace Pdam.Common.Shared.Infrastructure
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 error = new ErrorDetail
                 {
-                    ErrorCode = (int)HttpStatusCode.InternalServerError,
+                    ErrorCode = "500",
                     Description = DefaultMessage.ErrorMessage
                 };
             }
@@ -58,7 +59,7 @@ namespace Pdam.Common.Shared.Infrastructure
                 await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
                 return;
             }
-            if (context.Response.StatusCode == 200 && context.Response.ContentType != null && !context.Response.ContentType.Contains("application/json"))
+            if (context.Response.StatusCode == 200 && !context.Response.ContentType.Contains("application/json"))
             {
                 await context.Response.WriteAsync(readToEnd);
                 return;
