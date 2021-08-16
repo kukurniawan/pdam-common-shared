@@ -22,7 +22,7 @@
 
         public static ValidationResult Error(string message)
         {
-            return new ValidationResult(false, message, null);
+            return new ValidationResult(false, message, "422");
         }
     }
 }

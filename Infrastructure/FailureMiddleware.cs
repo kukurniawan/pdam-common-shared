@@ -21,6 +21,7 @@ namespace Pdam.Common.Shared.Infrastructure
 
         public async Task Invoke(HttpContext context, IApiLogger logger)
         {
+            var currentBody = context.Response.Body;
             await using var memoryStream = new MemoryStream();
             context.Response.Body = memoryStream;
             ErrorDetail error = null;
@@ -38,7 +39,8 @@ namespace Pdam.Common.Shared.Infrastructure
                 error = new ErrorDetail
                 {
                     ErrorCode = apiException.ErrorCode,
-                    Description = apiException.Message
+                    Description = apiException.Message,
+                    StatusCode =  apiException.StatusCode
                 };
             }
             catch (Exception e)
@@ -51,6 +53,8 @@ namespace Pdam.Common.Shared.Infrastructure
                     Description = DefaultMessage.ErrorMessage
                 };
             }
+            context.Response.Body = currentBody;
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
             var readToEnd = await new StreamReader(memoryStream).ReadToEndAsync();
             if ( string.Compare(context.Response.ContentType, "image/png", StringComparison.InvariantCultureIgnoreCase) == 0)
