@@ -1,4 +1,6 @@
-﻿namespace Pdam.Common.Shared.Fault
+﻿// ReSharper disable CheckNamespace
+namespace Pdam.Common.Shared.Fault
+    // ReSharper restore CheckNamespace
 {
     public class ValidationResult
     {

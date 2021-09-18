@@ -5,7 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Fault
+    // ReSharper restore CheckNamespace
 {
     public class ValidationDecorator<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

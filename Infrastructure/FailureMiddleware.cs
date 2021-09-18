@@ -8,7 +8,9 @@ using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Logging;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Infrastructure
+    // ReSharper restore CheckNamespace
 {
     public class FailureMiddleware
     {

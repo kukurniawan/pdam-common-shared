@@ -1,4 +1,6 @@
-﻿namespace Pdam.Common.Shared.Helper
+﻿// ReSharper disable CheckNamespace
+namespace Pdam.Common.Shared.Helper
+    // ReSharper restore CheckNamespace
 {
     public static class StringHelper
     {

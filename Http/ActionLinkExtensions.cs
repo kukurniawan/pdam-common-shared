@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Helper;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Http
+    // ReSharper restore CheckNamespace
 {
     public static class ActionLinkExtensions
     {

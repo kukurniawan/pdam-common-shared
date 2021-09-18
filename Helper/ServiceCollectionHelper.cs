@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Helper
+    // ReSharper restore CheckNamespace
 {
     public static class ServiceCollectionHelper
     {

@@ -1,6 +1,8 @@
 ﻿using Pdam.Common.Shared.Fault;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Http
+    // ReSharper restore CheckNamespace
 {
     public class BaseResponse
     {

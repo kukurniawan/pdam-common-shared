@@ -1,7 +1,8 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Logging
+    // ReSharper restore CheckNamespace
 {
     public interface IApiLogger
     {

@@ -1,6 +1,8 @@
 ﻿using System.Net;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Fault
+    // ReSharper restore CheckNamespace
 {
     public class ErrorDetail
     {

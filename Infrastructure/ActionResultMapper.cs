@@ -2,7 +2,9 @@
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Http;
 
+// ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Infrastructure
+    // ReSharper restore CheckNamespace
 {
     public static class ActionResultMapper
     {
