@@ -9,7 +9,7 @@ using MediatR;
 namespace Pdam.Common.Shared.Fault
     // ReSharper restore CheckNamespace
 {
-    public class ValidationDecorator<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class ValidationDecorator<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IRequestValidator<TRequest>> _validators;
 
