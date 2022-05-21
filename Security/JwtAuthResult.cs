@@ -1,3 +1,5 @@
+using System;
+
 namespace Pdam.Common.Shared.Security;
 
 public class JwtAuthResult
