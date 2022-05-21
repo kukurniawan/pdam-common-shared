@@ -12,5 +12,5 @@ public interface IJwtAuthManager
     JwtAuthResult Refresh(string refreshToken, string accessToken, string email, DateTime now);
     void RemoveExpiredRefreshTokens(DateTime now);
     void RemoveRefreshTokenByUserName(string userName);
-    (ClaimsPrincipal principal, JwtSecurityToken?) DecodeJwtToken(string token);
+    (ClaimsPrincipal principal, JwtSecurityToken) DecodeJwtToken(string token);
 }

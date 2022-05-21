@@ -84,7 +84,7 @@ public class JwtAuthManager : IJwtAuthManager
         return GenerateTokens(email, principal.Claims.ToArray(), now); // need to recover the original claims
     }
 
-    public (ClaimsPrincipal principal, JwtSecurityToken?) DecodeJwtToken(string token)
+    public (ClaimsPrincipal principal, JwtSecurityToken) DecodeJwtToken(string token)
     {
         /*if (_httpContextAccessor.HttpContext?.Request.Path == "/account/refresh-token")
         {
