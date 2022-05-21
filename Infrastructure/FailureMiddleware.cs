@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
@@ -26,13 +22,14 @@ namespace Pdam.Common.Shared.Infrastructure
             var currentBody = context.Response.Body;
             await using var memoryStream = new MemoryStream();
             context.Response.Body = memoryStream;
-            ErrorDetail error = null;
+            ErrorDetail? error = null;
             try
             {
                 await _next(context);
             }
             catch (DbUpdateConcurrencyException exception)
             {
+                logger.Exception(exception.Message, exception, DefaultEventId.DbUpdateConcurrencyException);
             }
             catch (ApiException apiException)
             {
@@ -80,6 +77,21 @@ namespace Pdam.Common.Shared.Infrastructure
             {
                 await context.Response.WriteAsync(readToEnd);
             }
+
+            if (context.Response.ContentType.Contains("image"))
+            {
+                var buffer = memoryStream.ToArray();
+                await context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+                return;
+            }
+
+            if (!context.Response.ContentType.Contains("application/json"))
+            {
+                await context.Response.WriteAsync(readToEnd);
+                return;
+            }
+
+            await context.Response.WriteAsync(readToEnd);
         }
     }
 }
