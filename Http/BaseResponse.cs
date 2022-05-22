@@ -49,6 +49,13 @@ namespace Pdam.Common.Shared.Http
             StatusCode = 200;
             IsSuccessful = status;
         }
+        private BaseResponse(T data,  bool status, string message)
+        {
+            Data = data;
+            StatusCode = 200;
+            IsSuccessful = status;
+            Message = message;
+        }
 
         public string Message { get; set; }
 
@@ -62,9 +69,13 @@ namespace Pdam.Common.Shared.Http
             return new BaseResponse<TValue>(result, errorDescription, errorCode, false);
         }
 
-        public static BaseResponse<TValue> Ok<TValue>(TValue message)
+        public static BaseResponse<TValue> Ok<TValue>(TValue obj)
         {
-            return new BaseResponse<TValue>(message, true);
+            return new BaseResponse<TValue>(obj, true);
+        }
+        public static BaseResponse<TValue> Ok<TValue>(TValue obj, string message)
+        {
+            return new BaseResponse<TValue>(obj, true, message);
         }
     }
 }

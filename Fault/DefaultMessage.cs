@@ -12,6 +12,7 @@ namespace Pdam.Common.Shared.Fault
         public const string InActiveAccount = "Tidak dapat melakukan authorisasi, Akun anda tidak aktif";
         public const string LockedAccount = "Tidak dapat melakukan authorisasi, Akun anda terkunci";
         public const string UnauthorizedAccount = "Tidak dapat melakukan authorisasi, kesalahan username atau password";
+        public const string UnauthorizedCompany = "Tidak dapat melakukan authorisasi, kesalahan company id";
     }
 
     public static class DefaultEventId
