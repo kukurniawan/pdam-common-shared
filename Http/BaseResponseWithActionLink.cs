@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Http

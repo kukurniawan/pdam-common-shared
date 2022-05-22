@@ -15,11 +15,8 @@ namespace Pdam.Common.Shared.Infrastructure
             return result.IsSuccessful
                 ? new ObjectResult(result)
                     { StatusCode = result.StatusCode }
-                : result.Error == null
-                    ? new ObjectResult(new ErrorDetail { Description = Message })
-                        { StatusCode = result.StatusCode }
-                    : new ObjectResult(result.Error)
-                        { StatusCode = result.StatusCode };
+                : new ObjectResult(result.Error)
+                    { StatusCode = result.StatusCode };
         }
     }
 }
