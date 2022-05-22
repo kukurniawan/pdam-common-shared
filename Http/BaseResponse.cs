@@ -57,7 +57,7 @@ namespace Pdam.Common.Shared.Http
             Message = message;
         }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         public T Data { get; set; }
 

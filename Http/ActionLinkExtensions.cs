@@ -25,21 +25,21 @@ namespace Pdam.Common.Shared.Http
         private static string GetForwardedHostHeader(this IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext != null)
-                return httpContextAccessor.HttpContext != null &&
-                       httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-Forwarded-Host", out var stringValues)
+                return (httpContextAccessor.HttpContext != null &&
+                        httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-Forwarded-Host", out var stringValues)
                     ? stringValues.FirstOrDefault()
-                    : httpContextAccessor.HttpContext.Request.Host.ToString();
+                    : httpContextAccessor.HttpContext!.Request.Host.ToString()) ?? string.Empty;
             throw new ApiException(HttpStatusCode.BadRequest, "Invalid header http request", "400");
         }
 
         private static string GetForwardedProtoHeader(this IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext != null)
-                return httpContextAccessor.HttpContext != null &&
-                       httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-Forwarded-Proto",
-                           out var stringValues)
+                return (httpContextAccessor.HttpContext != null &&
+                        httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-Forwarded-Proto",
+                            out var stringValues)
                     ? stringValues.FirstOrDefault()
-                    : httpContextAccessor.HttpContext.Request.Scheme;
+                    : httpContextAccessor.HttpContext!.Request.Scheme) ?? string.Empty;
             throw new ApiException(HttpStatusCode.BadRequest, "Invalid header http request", "400");
         }
     }
