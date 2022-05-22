@@ -1,6 +1,9 @@
 ﻿
 
 // ReSharper disable CheckNamespace
+
+using System.Collections.Generic;
+
 namespace Pdam.Common.Shared.Http
     // ReSharper restore CheckNamespace
 {
