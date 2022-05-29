@@ -3,10 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Pdam.Common.Shared.Fault;
 
 namespace Pdam.Common.Shared.Security;
 
@@ -109,6 +111,15 @@ public class JwtAuthManager : IJwtAuthManager
                 },
                 out var validatedToken);
         return (principal, validatedToken as JwtSecurityToken);
+    }
+
+    public string GetClaim(string token, string key)
+    {
+        var cl = DecodeJwtToken(token);
+        var claim = cl.principal.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+        if (claim == null)
+            throw new ApiException(HttpStatusCode.BadRequest, DefaultMessage.InvalidClaim, "10401");
+        return claim.Value;
     }
 
     private static string GenerateRefreshTokenString()
