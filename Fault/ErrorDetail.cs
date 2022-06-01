@@ -6,7 +6,7 @@ namespace Pdam.Common.Shared.Fault
 {
     public class ErrorDetail
     {
-        private ErrorDetail(string description, string errorCode, HttpStatusCode statusCode)
+        public ErrorDetail(string description, string errorCode, HttpStatusCode statusCode)
         {
             Description = description;
             ErrorCode = errorCode;
