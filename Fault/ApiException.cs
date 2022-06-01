@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Fault
@@ -30,6 +29,14 @@ namespace Pdam.Common.Shared.Fault
         {
             StatusCode = status;
             ErrorCode = resultErrorCode;
+            EventId = "0";
+        }
+        
+        public ApiException(ErrorDetail errorDetail) : base(errorDetail.Description)
+        {
+            StatusCode = errorDetail.StatusCode;
+            ErrorCode = errorDetail.ErrorCode;
+            EventId = "0";
         }
         
         public string EventId { get; set; }

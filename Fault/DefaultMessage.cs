@@ -19,4 +19,5 @@ namespace Pdam.Common.Shared.Fault
     {
         public const string DbUpdateConcurrencyException = "14002";
     }
+    
 }
