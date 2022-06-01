@@ -1,4 +1,7 @@
 ﻿// ReSharper disable CheckNamespace
+
+using System.Net;
+
 namespace Pdam.Common.Shared.Fault
     // ReSharper restore CheckNamespace
 {
@@ -13,6 +16,7 @@ namespace Pdam.Common.Shared.Fault
         public const string LockedAccount = "Tidak dapat melakukan authorisasi, Akun anda terkunci";
         public const string UnauthorizedAccount = "Tidak dapat melakukan authorisasi, kesalahan username atau password";
         public const string UnauthorizedCompany = "Tidak dapat melakukan authorisasi, kesalahan company id";
+        public const string InvalidClaim = "Security claim tidak valid atau anda tidak memiliki hak akses";
     }
 
     public static class DefaultEventId

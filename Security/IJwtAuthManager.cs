@@ -13,4 +13,5 @@ public interface IJwtAuthManager
     void RemoveExpiredRefreshTokens(DateTime now);
     void RemoveRefreshTokenByUserName(string userName);
     (ClaimsPrincipal principal, JwtSecurityToken) DecodeJwtToken(string token);
+    string GetClaim(string token, string key);
 }

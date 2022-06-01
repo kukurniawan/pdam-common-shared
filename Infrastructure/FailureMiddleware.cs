@@ -61,6 +61,18 @@ namespace Pdam.Common.Shared.Infrastructure
             memoryStream.Seek(0, SeekOrigin.Begin);
 
             var readToEnd = await new StreamReader(memoryStream).ReadToEndAsync();
+
+            if (context.Response.StatusCode == 401)
+            {
+                context.Response.ContentType = "application/json;charset=utf-8";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new ErrorDetail
+                {
+                    Description = DefaultMessage.UnauthorizedAccount,
+                    ErrorCode = "401",
+                    StatusCode = HttpStatusCode.Unauthorized
+                }));
+            }
+            
             if ( string.Compare(context.Response.ContentType, "image/png", StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 var buffer = memoryStream.ToArray();
