@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Helper;
 
@@ -14,8 +15,8 @@ namespace Pdam.Common.Shared.Http
         {
             return $"{GetBaseLink(httpContextAccessor)}/{route}/{key}";
         }
-        
-        public static string GetBaseLink(this IHttpContextAccessor httpContextAccessor)
+
+        private static string GetBaseLink(this IHttpContextAccessor httpContextAccessor)
         {
             var baseUrl = GetForwardedHostHeader(httpContextAccessor);
             var protocol = GetForwardedProtoHeader(httpContextAccessor);
@@ -41,6 +42,11 @@ namespace Pdam.Common.Shared.Http
                     ? stringValues.FirstOrDefault()
                     : httpContextAccessor.HttpContext!.Request.Scheme) ?? string.Empty;
             throw new ApiException(HttpStatusCode.BadRequest, "Invalid header http request", "400");
+        }
+
+        public static string GetToken(this IHttpContextAccessor httpContextAccessor)
+        {
+            return httpContextAccessor.HttpContext?.Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "") ?? throw new ApiException(ErrorDetail.NoSecurityToken);
         }
     }
 }

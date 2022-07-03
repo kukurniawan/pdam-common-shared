@@ -21,8 +21,9 @@ public static class PdamSupport
         public const string AppTypeName = "Sambungan Baru";
     }
 
-    public static ErrorDetail TrackingNotFound => new("Proses tracking perusahaan anda tidak terdaftar", "1704", HttpStatusCode.UnprocessableEntity);
-    public static ErrorDetail DefaultTrackingNotFound => new("Kesalahan default tracker", "1705", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail TrackingNotFound => new("Proses tracking perusahaan anda tidak terdaftar", "1701", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail DefaultTrackingNotFound => new("Kesalahan default tracker", "1702", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail AppRequestNotFound => new("Kesalahan request sambungan baru", "1703", HttpStatusCode.UnprocessableEntity);
 }
 
 public enum RequestStatus
@@ -30,4 +31,10 @@ public enum RequestStatus
     Active = 1,
     Postpone = 2,
     Reject = 9
+}
+
+public static class RequestType
+{
+    public const string SAMBUNGAN_BARU = "Sambungan Baru";
+    public const string TUTUP_REKENING = "Tutup Rekening";
 }

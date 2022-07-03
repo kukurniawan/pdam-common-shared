@@ -116,9 +116,8 @@ public class JwtAuthManager : IJwtAuthManager
     public string GetClaim(string token, string key)
     {
         var cl = DecodeJwtToken(token);
-        var claim = cl.principal.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
-        if (claim == null)
-            throw new ApiException(HttpStatusCode.BadRequest, DefaultMessage.InvalidClaim, "10401");
+        var claim = cl.principal.Claims.FirstOrDefault(x => x.Type == key);
+        if (claim == null) throw new ApiException(ErrorDetail.NoClaim);
         return claim.Value;
     }
 

@@ -25,6 +25,22 @@ namespace Pdam.Common.Shared.Fault
         public HttpStatusCode StatusCode { get; set; }
 
         public static ErrorDetail UnauthorizedCompany =>
-            new(DefaultMessage.UnauthorizedCompany, "1701", HttpStatusCode.BadRequest);
+            new(DefaultMessage.UnauthorizedCompany, "9001", HttpStatusCode.BadRequest);
+        
+        public static ErrorDetail NoActionArgument =>
+            new(DefaultMessage.InvalidActionArgument, "9002", HttpStatusCode.UnprocessableEntity);
+        public static ErrorDetail InvalidRequest =>
+            new(DefaultMessage.InvalidRequest, "9003", HttpStatusCode.UnprocessableEntity);
+        
+        public static ErrorDetail InvalidAppRequest =>
+            new(DefaultMessage.InvalidRequest, "9004", HttpStatusCode.UnprocessableEntity);
+        
+        public static ErrorDetail NoSecurityToken =>
+            new(DefaultMessage.UnauthorizedAccount, "9005", HttpStatusCode.Unauthorized);
+        public static ErrorDetail NoClaim =>
+            new(DefaultMessage.NoClaim, "9006", HttpStatusCode.Unauthorized);
+
+        public static ErrorDetail UnauthorizedUser =>
+            new(DefaultMessage.UnauthorizedEmail, "9007", HttpStatusCode.Unauthorized);
     }
 }

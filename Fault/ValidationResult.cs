@@ -26,5 +26,10 @@ namespace Pdam.Common.Shared.Fault
         {
             return new ValidationResult(false, message, "422");
         }
+        
+        public static ValidationResult Error(ErrorDetail errorDetail)
+        {
+            return new ValidationResult(false, errorDetail.Description, errorDetail.ErrorCode);
+        }
     }
 }
