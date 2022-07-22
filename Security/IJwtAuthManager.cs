@@ -14,4 +14,6 @@ public interface IJwtAuthManager
     void RemoveRefreshTokenByUserName(string userName);
     (ClaimsPrincipal principal, JwtSecurityToken) DecodeJwtToken(string token);
     string GetClaim(string token, string key);
+    string GetClaim(string key);
+    Task<Guid> GetValidUserClaimUid();
 }

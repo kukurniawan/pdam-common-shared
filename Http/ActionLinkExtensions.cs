@@ -43,10 +43,6 @@ namespace Pdam.Common.Shared.Http
                     : httpContextAccessor.HttpContext!.Request.Scheme) ?? string.Empty;
             throw new ApiException(HttpStatusCode.BadRequest, "Invalid header http request", "400");
         }
-
-        public static string GetToken(this IHttpContextAccessor httpContextAccessor)
-        {
-            return httpContextAccessor.HttpContext?.Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "") ?? throw new ApiException(ErrorDetail.NoSecurityToken);
-        }
+        
     }
 }

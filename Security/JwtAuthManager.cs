@@ -4,22 +4,29 @@ using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Pdam.Common.Shared.Fault;
+using Pdam.Common.Shared.Http;
 
 namespace Pdam.Common.Shared.Security;
 
 public class JwtAuthManager : IJwtAuthManager
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     public IImmutableDictionary<string, RefreshToken> UsersRefreshTokensReadOnlyDictionary => _usersRefreshTokens.ToImmutableDictionary();
     private readonly ConcurrentDictionary<string, RefreshToken> _usersRefreshTokens;  // can store in a database or a distributed cache
     private readonly byte[] _secret;
-
-    public JwtAuthManager()
+    internal const string CLAIM_TYPE_EMAIL = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+    internal const string CLAIM_TYPE_NAME = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+    internal const string CLAIM_TYPE_ROLE = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+    internal const string CLAIM_TYPE_UID = "uid";
+    public JwtAuthManager(IHttpContextAccessor httpContextAccessor)
     {
+        _httpContextAccessor = httpContextAccessor;
         _usersRefreshTokens = new ConcurrentDictionary<string, RefreshToken>();
         _secret = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JwtKey") ?? throw new InvalidOperationException("Invalid JWT Key"));
     }
@@ -118,6 +125,24 @@ public class JwtAuthManager : IJwtAuthManager
         var cl = DecodeJwtToken(token);
         var claim = cl.principal.Claims.FirstOrDefault(x => x.Type == key);
         if (claim == null) throw new ApiException(ErrorDetail.NoClaim);
+        return claim.Value;
+    }
+    
+    public async Task<Guid> GetValidUserClaimUid()
+    {
+        var uid = GetClaim(CLAIM_TYPE_UID);
+        /*var user = await _context.Users.FirstOrDefaultAsync(x => x.UID == new Guid(uid));
+        if (user == null) throw new CoreServiceException(ErrorMessage.ACCOUNT_INVALID_ACCESS);*/
+        return new Guid(uid);
+    }
+    
+    public string GetClaim(string key)
+    {
+        var token = _httpContextAccessor.GetToken();
+        var cl = DecodeJwtToken(token);
+        var claim = cl.principal.Claims.FirstOrDefault(x => x.Type == key);
+        if (claim == null)
+            throw new SecurityException("Invalid or token has been expire");
         return claim.Value;
     }
 
