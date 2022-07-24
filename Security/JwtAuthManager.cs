@@ -8,6 +8,8 @@ using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Http;

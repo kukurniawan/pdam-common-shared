@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Pdam.Common.Shared.Security;
 
