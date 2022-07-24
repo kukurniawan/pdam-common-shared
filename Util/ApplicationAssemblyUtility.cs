@@ -5,11 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 
 namespace Pdam.Common.Shared.Util
 {
-    [SwaggerIgnore]
     public class ApplicationAssemblyUtility
     {
         static readonly Lazy<Assembly> LazyApplicationAssembly = new Lazy<Assembly>(GetApplicationAssembly, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -47,7 +45,6 @@ namespace Pdam.Common.Shared.Util
         /// Checks for the DebuggableAttribute on the assembly provided to determine
         /// whether it has been built in Debug mode.
         /// </summary>
-        [SwaggerIgnore]
         public static bool AssemblyIsDebugBuild(Assembly assembly)
         {
             return assembly
