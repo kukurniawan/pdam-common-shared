@@ -42,5 +42,7 @@ namespace Pdam.Common.Shared.Fault
 
         public static ErrorDetail UnauthorizedUser =>
             new(DefaultMessage.UnauthorizedEmail, "9007", HttpStatusCode.Unauthorized);
+        public static ErrorDetail ErrorOnUpdateDbContext =>
+            new(DefaultMessage.DEFAULT_ERROR_ON_INSERT_OR_UPDATE, "9008", HttpStatusCode.UnprocessableEntity);
     }
 }

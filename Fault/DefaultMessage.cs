@@ -21,6 +21,8 @@ namespace Pdam.Common.Shared.Fault
         public const string InvalidRequest = "Request tidak valid, data tidak dapat diproses";
         public const string NoClaim = "Tidak dapat melakukan authorisasi, claim authorisasi tidak ditemukan";
         public const string UnauthorizedEmail = "Tidak dapat melakukan authorisasi, email anda tidak memiliki hak akses";
+        
+        public const string DEFAULT_ERROR_ON_INSERT_OR_UPDATE = "Gagal memasukkan/memperbarui data, harap hubungi sistem administrator Anda.";
     }
 
     public static class DefaultEventId

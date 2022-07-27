@@ -15,15 +15,18 @@ public static class PdamSupport
             "Pengajuan Pemasangan baru telah diterima dan sedang diproses, silahkan tunggu";
     }
     
+    /*
     public static class DefaultError
     {
         public const string By = "System";
         public const string AppTypeName = "Sambungan Baru";
-    }
+    }*/
 
     public static ErrorDetail TrackingNotFound => new("Proses tracking perusahaan anda tidak terdaftar", "1701", HttpStatusCode.UnprocessableEntity);
     public static ErrorDetail DefaultTrackingNotFound => new("Kesalahan default tracker", "1702", HttpStatusCode.UnprocessableEntity);
     public static ErrorDetail AppRequestNotFound => new("Kesalahan request sambungan baru", "1703", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail ActiveTrackingNotFound => new("Tidak ada proses tracking terbaru", "1704", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail ActiveTrackingRoleNotAllowed => new("Anda tidak memiliki hak akses untuk memperbaharui ticket ini ", "1705", HttpStatusCode.UnprocessableEntity);
 }
 
 public enum RequestStatus
