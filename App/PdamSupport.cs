@@ -41,3 +41,22 @@ public static class RequestType
     public const string SAMBUNGAN_BARU = "Sambungan Baru";
     public const string TUTUP_REKENING = "Tutup Rekening";
 }
+
+public enum BuildingType
+{
+    RumahKayu,
+    RumahBeton,
+    Toko,
+    Kios,
+    Kantor,
+    FasilitasUmum,
+    Lainnya
+}
+
+public enum BuildingDesignation
+{
+    TempatTinggal,
+    TempatUsaha,
+    Sosial,
+    Lainnya
+}
