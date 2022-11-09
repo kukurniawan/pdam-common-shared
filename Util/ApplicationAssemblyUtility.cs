@@ -25,7 +25,7 @@ namespace Pdam.Common.Shared.Util
 
         public static string GetApplicationVersionNumber()
         {
-            return ApplicationAssembly.GetName().Version.ToString(3);
+            return ApplicationAssembly.GetName().Version!.ToString(3);
         }
 
         public static string GetAssemblyVersionFromType(Type type)
