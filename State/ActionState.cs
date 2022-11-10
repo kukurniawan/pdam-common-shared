@@ -4,5 +4,6 @@ public enum ActionState
 {
     Approve = 1,
     Revise,
-    Reject
+    Reject,
+    Update
 }

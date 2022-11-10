@@ -35,7 +35,7 @@ namespace Pdam.Common.Shared.Http
             IsSuccessful = true;
         }
         
-        public BaseResponse(T data, string message, int errorCode, bool? status = true)
+        public BaseResponse(T data, string message, int errorCode = 200, bool? status = true)
         {
             Data = data;
             Message = message;
