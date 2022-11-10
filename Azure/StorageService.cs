@@ -3,9 +3,20 @@ using Azure.Storage.Blobs.Models;
 
 namespace Pdam.Common.Shared.Azure;
 
+/// <summary>
+/// azure storage service
+/// </summary>
 public class StorageService : IFileService
 {
     
+    /// <summary>
+    /// update blog file
+    /// </summary>
+    /// <param name="sourceBase64"></param>
+    /// <param name="fileName"></param>
+    /// <param name="container"></param>
+    /// <param name="access"></param>
+    /// <returns></returns>
     public async Task<string> UploadFile(string sourceBase64, string fileName, string container,  string access = "Private")
     {
         var filetype = Path.GetExtension(fileName).ToLower();

@@ -2,8 +2,18 @@ using System.Text;
 
 namespace Pdam.Common.Shared.Data;
 
+/// <summary>
+/// lambda helper
+/// </summary>
 public class LambdaHelper
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="except"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public static Tuple<string, object[]> GetDynamicWhereTerm<T>(T obj, params string[] except) where T : class
     {
         var s = new StringBuilder();
@@ -34,6 +44,12 @@ public class LambdaHelper
         return new Tuple<string, object[]>(s.ToString(), f.ToArray());
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static string GetDynamicSortBy(Type type, string value)
     {
         var sortParams = value.Split(':');
