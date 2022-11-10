@@ -27,7 +27,7 @@ namespace Pdam.Common.Shared.Fault
         public static ErrorDetail UnauthorizedCompany =>
             new(DefaultMessage.UnauthorizedCompany, "9001", HttpStatusCode.BadRequest);
         
-        public static ErrorDetail NoActionArgument =>
+        public static ErrorDetail InvalidActionState =>
             new(DefaultMessage.InvalidActionArgument, "9002", HttpStatusCode.UnprocessableEntity);
         public static ErrorDetail InvalidRequest =>
             new(DefaultMessage.InvalidRequest, "9003", HttpStatusCode.UnprocessableEntity);
@@ -44,5 +44,6 @@ namespace Pdam.Common.Shared.Fault
             new(DefaultMessage.UnauthorizedEmail, "9007", HttpStatusCode.Unauthorized);
         public static ErrorDetail ErrorOnUpdateDbContext =>
             new(DefaultMessage.DEFAULT_ERROR_ON_INSERT_OR_UPDATE, "9008", HttpStatusCode.UnprocessableEntity);
+        
     }
 }
