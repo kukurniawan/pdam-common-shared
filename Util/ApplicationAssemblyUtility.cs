@@ -1,36 +1,44 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
 
 namespace Pdam.Common.Shared.Util
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApplicationAssemblyUtility
     {
-        static readonly Lazy<Assembly> LazyApplicationAssembly = new Lazy<Assembly>(GetApplicationAssembly, LazyThreadSafetyMode.ExecutionAndPublication);
-        static readonly Lazy<string> LazyApplicationBinFolder = new Lazy<string>(GetApplicationBinFolder, LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<Assembly> LazyApplicationAssembly = new(GetApplicationAssembly, LazyThreadSafetyMode.ExecutionAndPublication);
+        [Obsolete("Obsolete")] private static readonly Lazy<string> LazyApplicationBinFolder = new(GetApplicationBinFolder, LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static Assembly ApplicationAssembly
-        {
-            get { return LazyApplicationAssembly.Value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Assembly ApplicationAssembly => LazyApplicationAssembly.Value;
 
-        public static string ApplicationBinFolder
-        {
-            get { return LazyApplicationBinFolder.Value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        [Obsolete("Obsolete")]
+        public static string ApplicationBinFolder => LazyApplicationBinFolder.Value;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static string GetApplicationVersionNumber()
         {
             return ApplicationAssembly.GetName().Version!.ToString(3);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string GetAssemblyVersionFromType(Type type)
         {
-            return type.Assembly.GetName().Version.ToString(3);
+            return type.Assembly.GetName().Version!.ToString(3);
         }
 
         /// <summary>
@@ -45,7 +53,7 @@ namespace Pdam.Common.Shared.Util
         /// Checks for the DebuggableAttribute on the assembly provided to determine
         /// whether it has been built in Debug mode.
         /// </summary>
-        public static bool AssemblyIsDebugBuild(Assembly assembly)
+        private static bool AssemblyIsDebugBuild(Assembly assembly)
         {
             return assembly
                 .GetCustomAttributes(false)
@@ -54,18 +62,24 @@ namespace Pdam.Common.Shared.Util
                 .FirstOrDefault();
         }
 
-        static string GetApplicationBinFolder()
+        [Obsolete("Obsolete")]
+        private static string GetApplicationBinFolder()
         {
             var codeBase = ApplicationAssembly.CodeBase;
-            var uri = new UriBuilder(codeBase);
+            var uri = new UriBuilder(codeBase ?? throw new InvalidOperationException());
             var path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
+            return Path.GetDirectoryName(path) ?? throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete("Obsolete")]
         public static DateTime GetBuildDateTime()
         {
             var codeBase = ApplicationAssembly.CodeBase;
-            var uri = new UriBuilder(codeBase);
+            var uri = new UriBuilder(codeBase ?? throw new InvalidOperationException());
             var path = Uri.UnescapeDataString(uri.Path);
             return File.GetLastWriteTime(path);
         }
