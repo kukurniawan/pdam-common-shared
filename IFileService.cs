@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Pdam.Common.Shared;
 
 public interface IFileService
