@@ -60,6 +60,12 @@ public static class PdamSupport
     /// 
     /// </summary>
     public static ErrorDetail ActiveTrackingRoleNotAllowed => new("Anda tidak memiliki hak akses untuk memperbaharui ticket ini ", "1705", HttpStatusCode.UnprocessableEntity);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static ErrorDetail NoActiveSpk =>
+        new ErrorDetail("SPK tidak ditemukan", "1706", HttpStatusCode.UnprocessableEntity);
 }
 
 /// <summary>
