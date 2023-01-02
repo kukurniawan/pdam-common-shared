@@ -6,10 +6,19 @@ using Pdam.Common.Shared.Http;
 namespace Pdam.Common.Shared.Infrastructure
     // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ActionResultMapper
     {
         private const string Message =
             "Something went wrong. Please try again in a few minutes or contact your support team.";
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="result"></param>
+        /// <typeparam name="TResponse"></typeparam>
+        /// <returns></returns>
         public static IActionResult ToActionResult<TResponse>(TResponse result) where TResponse : BaseResponse
         {
             return result.IsSuccessful

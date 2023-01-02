@@ -4,8 +4,17 @@
 namespace Pdam.Common.Shared.Http
     // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BaseResponse
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccessful"></param>
+        /// <param name="statusCode"></param>
+        /// <param name="error"></param>
         public BaseResponse(bool isSuccessful, int statusCode, ErrorDetail error)
         {
             IsSuccessful = isSuccessful;
@@ -13,6 +22,9 @@ namespace Pdam.Common.Shared.Http
             Error = error;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected BaseResponse()
         {
             IsSuccessful = true;
@@ -22,11 +34,22 @@ namespace Pdam.Common.Shared.Http
 
         internal bool IsSuccessful { get; set; }
         internal int StatusCode { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ErrorDetail Error { get; set; }
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseResponse<T>
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
         public BaseResponse(T data)
         {
             Data = data;
@@ -35,6 +58,13 @@ namespace Pdam.Common.Shared.Http
             IsSuccessful = true;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="message"></param>
+        /// <param name="errorCode"></param>
+        /// <param name="status"></param>
         public BaseResponse(T data, string message, int errorCode = 200, bool? status = true)
         {
             Data = data;
@@ -57,22 +87,52 @@ namespace Pdam.Common.Shared.Http
             Message = message;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string? Message { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public T Data { get; set; }
 
         internal bool IsSuccessful { get; set; }
         internal int StatusCode { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ErrorDetail Error { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errorDescription"></param>
+        /// <param name="errorCode"></param>
+        /// <param name="result"></param>
+        /// <typeparam name="TValue"></typeparam>
+        /// <returns></returns>
         public static BaseResponse<TValue> Fail<TValue>(string errorDescription, int errorCode = 0, TValue result = default!)
         {
             return new BaseResponse<TValue>(result, errorDescription, errorCode, false);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <typeparam name="TValue"></typeparam>
+        /// <returns></returns>
         public static BaseResponse<TValue> Ok<TValue>(TValue obj)
         {
             return new BaseResponse<TValue>(obj, true);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="message"></param>
+        /// <typeparam name="TValue"></typeparam>
+        /// <returns></returns>
         public static BaseResponse<TValue> Ok<TValue>(TValue obj, string message)
         {
             return new BaseResponse<TValue>(obj, true, message);

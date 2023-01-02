@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using Pdam.Common.Shared.Infrastructure;
 
 namespace Pdam.Common.Shared;

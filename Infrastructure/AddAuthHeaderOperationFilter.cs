@@ -1,13 +1,19 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Pdam.Common.Shared.Infrastructure;
 
+/// <summary>
+/// 
+/// </summary>
 public class AddAuthHeaderOperationFilter : IOperationFilter
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="operation"></param>
+    /// <param name="context"></param>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var actionMetadata = context.ApiDescription.ActionDescriptor.EndpointMetadata;

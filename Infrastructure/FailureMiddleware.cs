@@ -1,27 +1,33 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
-using Pdam.Common.Shared.Logging;
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Infrastructure
     // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class FailureMiddleware
     {
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
         public FailureMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="logger"></param>
         public async Task Invoke(HttpContext context, ILogger<FailureMiddleware> logger)
         {
             var currentBody = context.Response.Body;

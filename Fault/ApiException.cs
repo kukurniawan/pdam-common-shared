@@ -1,14 +1,26 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Fault
     // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApiException : Exception
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public HttpStatusCode StatusCode { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="message"></param>
+        /// <param name="resultErrorCode"></param>
+        /// <param name="resultEventId"></param>
         public ApiException(HttpStatusCode status, string message, string resultErrorCode, string resultEventId = "0") : base(message)
         {
             StatusCode = status;
@@ -16,6 +28,14 @@ namespace Pdam.Common.Shared.Fault
             EventId = resultEventId;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="message"></param>
+        /// <param name="resultErrorCode"></param>
+        /// <param name="innerException"></param>
+        /// <param name="resultEventId"></param>
         public ApiException(HttpStatusCode status, string message, string resultErrorCode, Exception innerException, string resultEventId = "0") : base(message, innerException)
         {
             StatusCode = status;
@@ -24,8 +44,18 @@ namespace Pdam.Common.Shared.Fault
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string ErrorCode { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="message"></param>
+        /// <param name="resultErrorCode"></param>
+        /// <param name="innerException"></param>
         public ApiException(HttpStatusCode status, string message, string resultErrorCode, Exception innerException) : base(message, innerException)
         {
             StatusCode = status;
@@ -33,6 +63,10 @@ namespace Pdam.Common.Shared.Fault
             EventId = "0";
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errorDetail"></param>
         public ApiException(ErrorDetail errorDetail) : base(errorDetail.Description)
         {
             StatusCode = errorDetail.StatusCode;
@@ -40,6 +74,9 @@ namespace Pdam.Common.Shared.Fault
             EventId = "0";
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public string EventId { get; set; }
 
     }
