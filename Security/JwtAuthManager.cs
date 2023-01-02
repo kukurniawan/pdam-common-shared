@@ -16,9 +16,15 @@ using Pdam.Common.Shared.Http;
 
 namespace Pdam.Common.Shared.Security;
 
+/// <summary>
+/// 
+/// </summary>
 public class JwtAuthManager : IJwtAuthManager
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    /// <summary>
+    /// 
+    /// </summary>
     public IImmutableDictionary<string, RefreshToken> UsersRefreshTokensReadOnlyDictionary => _usersRefreshTokens.ToImmutableDictionary();
     private readonly ConcurrentDictionary<string, RefreshToken> _usersRefreshTokens;  // can store in a database or a distributed cache
     private readonly byte[] _secret;
@@ -26,6 +32,12 @@ public class JwtAuthManager : IJwtAuthManager
     internal const string CLAIM_TYPE_NAME = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
     internal const string CLAIM_TYPE_ROLE = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
     internal const string CLAIM_TYPE_UID = "uid";
+    internal const string CLAIM_USER_TYPE = "stype";
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
+    /// <exception cref="InvalidOperationException"></exception>
     public JwtAuthManager(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -34,6 +46,7 @@ public class JwtAuthManager : IJwtAuthManager
     }
 
     // optional: clean up expired refresh tokens
+    /// <inheritdoc />
     public void RemoveExpiredRefreshTokens(DateTime now)
     {
         var expiredTokens = _usersRefreshTokens.Where(x => x.Value.ExpireAt < now).ToList();
@@ -44,6 +57,7 @@ public class JwtAuthManager : IJwtAuthManager
     }
 
     // can be more specific to ip, user agent, device name, etc.
+    /// <inheritdoc />
     public void RemoveRefreshTokenByUserName(string userName)
     {
         var refreshTokens = _usersRefreshTokens.Where(x => x.Value.UserName == userName).ToList();
@@ -53,6 +67,7 @@ public class JwtAuthManager : IJwtAuthManager
         }
     }
 
+    /// <inheritdoc />
     public JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now)
     {
         var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
@@ -79,6 +94,7 @@ public class JwtAuthManager : IJwtAuthManager
         };
     }
 
+    /// <inheritdoc />
     public JwtAuthResult Refresh(string refreshToken, string accessToken, string email, DateTime now)
     {
         var (principal, jwtToken) = DecodeJwtToken(accessToken);
@@ -95,6 +111,7 @@ public class JwtAuthManager : IJwtAuthManager
         return GenerateTokens(email, principal.Claims.ToArray(), now); // need to recover the original claims
     }
 
+    /// <inheritdoc />
     public (ClaimsPrincipal principal, JwtSecurityToken) DecodeJwtToken(string token)
     {
         /*if (_httpContextAccessor.HttpContext?.Request.Path == "/account/refresh-token")
@@ -122,6 +139,7 @@ public class JwtAuthManager : IJwtAuthManager
         return (principal, validatedToken as JwtSecurityToken);
     }
 
+    /// <inheritdoc />
     public string GetClaim(string token, string key)
     {
         var cl = DecodeJwtToken(token);
@@ -129,15 +147,17 @@ public class JwtAuthManager : IJwtAuthManager
         if (claim == null) throw new ApiException(ErrorDetail.NoClaim);
         return claim.Value;
     }
-    
-    public async Task<Guid> GetValidUserClaimUid()
+
+    /// <inheritdoc />
+    public Task<Guid> GetValidUserClaimUid()
     {
         var uid = GetClaim(CLAIM_TYPE_UID);
         /*var user = await _context.Users.FirstOrDefaultAsync(x => x.UID == new Guid(uid));
         if (user == null) throw new CoreServiceException(ErrorMessage.ACCOUNT_INVALID_ACCESS);*/
-        return new Guid(uid);
+        return Task.FromResult(new Guid(uid));
     }
-    
+
+    /// <inheritdoc />
     public string GetClaim(string key)
     {
         var token = _httpContextAccessor.GetToken();
@@ -154,5 +174,17 @@ public class JwtAuthManager : IJwtAuthManager
         using var randomNumberGenerator = RandomNumberGenerator.Create();
         randomNumberGenerator.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public AuthenticationInfo Authenticate()
+    {
+        
+        var token = _httpContextAccessor.GetToken();
+        var jwtToken = DecodeJwtToken(token);
+        return AuthenticationInfo.Validate(jwtToken);
     }
 }
