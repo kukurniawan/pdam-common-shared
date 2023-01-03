@@ -46,11 +46,40 @@ namespace Pdam.Common.Shared.Helper
         /// 
         /// </summary>
         /// <param name="value"></param>
+        /// <returns></returns>
+        public static int? ToNullableInteger(this string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) return null;
+                return Convert.ToInt32(value);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
         public static string DefaultValue(this string value, string defaultValue = "")
         {
             return string.IsNullOrEmpty(value) ? defaultValue : value;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Guid? ToGuid(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+            return new Guid(value);
         }
     }
 }
