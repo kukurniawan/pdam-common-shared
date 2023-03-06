@@ -38,6 +38,7 @@ namespace Pdam.Common.Shared.Http
         /// 
         /// </summary>
         public ErrorDetail Error { get; set; }
+        public string Message { get; set; }
     }
     
     /// <summary>

@@ -11,7 +11,7 @@ public class SortParamList : IList<SortParam>
 {
     private readonly List<SortParam> _list;
 
-    private SortParamList()
+    public SortParamList()
     {
         _list = new List<SortParam>();
     }

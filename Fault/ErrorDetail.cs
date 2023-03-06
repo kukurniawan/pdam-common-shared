@@ -90,5 +90,32 @@ namespace Pdam.Common.Shared.Fault
         public static ErrorDetail ErrorOnUpdateDbContext =>
             new(DefaultMessage.DEFAULT_ERROR_ON_INSERT_OR_UPDATE, "9008", HttpStatusCode.UnprocessableEntity);
         
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ErrorDetail UnauthorizedRequest =>
+            new("Unauthorized request", "9007", HttpStatusCode.Unauthorized);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ErrorDetail InvalidConfiguration =>
+            new("Invalid configuration", "9501", HttpStatusCode.InternalServerError);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ErrorDetail FailedOnCreatingService =>
+            new("Failed on create service", "9502", HttpStatusCode.InternalServerError);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static ErrorDetail DefaultRecordNotFound(string name)
+        {
+            return new ErrorDetail($"Related record from {name} not found", "9400", HttpStatusCode.NotFound);
+        }
     }
 }

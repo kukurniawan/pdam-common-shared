@@ -1,4 +1,6 @@
+using System.Net;
 using System.Text;
+using Pdam.Common.Shared.Fault;
 
 namespace Pdam.Common.Shared.Data;
 
@@ -52,11 +54,36 @@ public class LambdaHelper
     /// <returns></returns>
     public static string GetDynamicSortBy(Type type, string value)
     {
-        var sortParams = value.Split(':');
-        var columnName = sortParams[0];
-        var sortOrder = sortParams.Length > 1 ? sortParams[1] : "asc";
+        var sortParams = value.Split(';');
+        var f = SortParamList.Instance;
+        foreach (var param in sortParams)
+        {
+            var g = param.Split(" ");
+            switch (g.Length)
+            {
+                case > 1:
+                    f.Add(new SortParam
+                    {
+                        ColumnName = g[0],
+                        SortColumn = g[0],
+                        SortOrder = g[1]
+                    });
+                    break;
+                case 1:
+                    f.Add(new SortParam
+                    {
+                        ColumnName = g[0],
+                        SortColumn = g[0]
+                    });
+                    break;
+                default:
+                    throw new ApiException(new ErrorDetail($"Invalid column name {param}", "2400", HttpStatusCode.BadRequest));
+            }
+        }
         var properties = type.GetProperties();
-        var matchProperty = properties.FirstOrDefault(x => x.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
-        return matchProperty == null ? $"{properties[0].Name} ASC" : $"{matchProperty.Name} {sortOrder}";
+        var matchProperty = properties.FirstOrDefault(x => f.Select(c=>c.SortColumn.ToLower()).Contains(x.Name.ToLower()));
+        if (matchProperty == null)
+            throw new ApiException(new ErrorDetail($"Invalid column name {value}", "2400", HttpStatusCode.BadRequest));
+        return string.Join(",", f.Select(x => $"{x.SortColumn} {x.SortOrder}".Trim()));
     }
 }

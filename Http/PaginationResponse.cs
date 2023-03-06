@@ -4,7 +4,7 @@
 /// 
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class PaginationResponse<T>
+public class PaginationResponse<T> : PaginationRequest
 {
     private readonly IEnumerable<T> _items;
     private readonly int _page;
