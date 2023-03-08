@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
+using Sentry;
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Infrastructure
@@ -41,6 +42,7 @@ namespace Pdam.Common.Shared.Infrastructure
             catch (DbUpdateConcurrencyException exception)
             {
                 logger.LogError(exception.Message, exception, DefaultEventId.DbUpdateConcurrencyException);
+                SentrySdk.CaptureException(exception);
             }
             catch (ApiException apiException)
             {
@@ -52,6 +54,7 @@ namespace Pdam.Common.Shared.Infrastructure
                     Description = apiException.Message,
                     StatusCode =  apiException.StatusCode
                 };
+                SentrySdk.CaptureException(apiException);
             }
             catch (Exception e)
             {
@@ -62,6 +65,7 @@ namespace Pdam.Common.Shared.Infrastructure
                     ErrorCode = "500",
                     Description = DefaultMessage.ErrorMessage
                 };
+                SentrySdk.CaptureException(e);
             }
             context.Response.Body = currentBody;
             memoryStream.Seek(0, SeekOrigin.Begin);
