@@ -27,6 +27,18 @@ namespace Pdam.Common.Shared.Fault
             ErrorCode = resultErrorCode;
             EventId = resultEventId;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="resultEventId"></param>
+        public ApiException(string message, string resultEventId = "0") : base(message)
+        {
+            StatusCode = HttpStatusCode.BadRequest;
+            ErrorCode = "400";
+            EventId = resultEventId;
+        }
 
         /// <summary>
         /// 
