@@ -86,4 +86,44 @@ public class LambdaHelper
             throw new ApiException(new ErrorDetail($"Invalid column name {value}", "2400", HttpStatusCode.BadRequest));
         return string.Join(",", f.Select(x => $"{x.SortColumn} {x.SortOrder}".Trim()));
     }
+    
+    public static string GetDynamicSortBy(Type type, string value, SortParamList sortParamList)
+    {
+        var sortParams = value.Split(';');
+        var f = SortParamList.Instance;
+        foreach (var param in sortParams)
+        {
+            var g = param.Split(" ");
+            switch (g.Length)
+            {
+                case > 1:
+                    var l = sortParamList.FirstOrDefault(x => x.ColumnName == g[0]);
+                    f.Add(new SortParam
+                    {
+                        ColumnName = g[0],
+                        SortColumn = l == null ? g[0] : l.SortColumn,
+                        SortOrder = g[1],
+                        Outer = l != null
+                    });
+                    break;
+                case 1:
+                    var j = sortParamList.FirstOrDefault(x => x.ColumnName == g[0]);
+                    f.Add(new SortParam
+                    {
+                        ColumnName = g[0],
+                        SortColumn = j == null ? g[0] : j.SortColumn,
+                        Outer = j != null
+                    });
+                    break;
+                default:
+                    throw new ApiException(new ErrorDetail($"Invalid column name {param}", "2400", HttpStatusCode.BadRequest));
+            }
+        }
+        var properties = type.GetProperties();
+        var matchProperty = properties.FirstOrDefault(x => f.Where(v=> v.Outer == false)
+            .Select(c=> c.SortColumn.ToLower()).Contains(x.Name.ToLower()));
+        if (matchProperty == null)
+            throw new ApiException(new ErrorDetail($"Invalid column name {value}", "2400", HttpStatusCode.BadRequest));
+        return string.Join(",", f.Select(x => $"{x.SortColumn} {x.SortOrder}".Trim()));
+    }
 }

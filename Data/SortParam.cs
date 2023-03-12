@@ -18,4 +18,9 @@ public class SortParam
     /// 
     /// </summary>
     public string ColumnName { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool Outer { get; set; }
 }
