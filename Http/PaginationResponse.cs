@@ -10,6 +10,7 @@ public class PaginationResponse<T> : PaginationRequest
     private readonly int _page;
     private readonly int _pageSize;
     private readonly int _totalCount;
+
     /// <summary>
     /// 
     /// </summary>
@@ -17,13 +18,14 @@ public class PaginationResponse<T> : PaginationRequest
     /// <param name="page"></param>
     /// <param name="pageSize"></param>
     /// <param name="totalCount"></param>
-    public PaginationResponse(IEnumerable<T> items, int page, int pageSize, int totalCount)
+    /// <param name="sortBy"></param>
+    public PaginationResponse(IEnumerable<T> items, int page, int pageSize, int totalCount, string sortBy)
     {
         _items = items;
         _page = page;
         _pageSize = pageSize;
         _totalCount = totalCount;
-
+        SortBy = sortBy;
     }
     /// <summary>
     /// 
@@ -33,12 +35,12 @@ public class PaginationResponse<T> : PaginationRequest
     /// <summary>
     /// 
     /// </summary>
-    public int Page => _page;
+    public new int Page => _page;
 
     /// <summary>
     /// 
     /// </summary>
-    public int PageSize => _pageSize;
+    public new int PageSize => _pageSize;
 
     /// <summary>
     /// 
