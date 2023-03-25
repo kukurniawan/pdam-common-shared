@@ -59,6 +59,14 @@ namespace Pdam.Common.Shared.Http
             IsSuccessful = true;
         }
         
+        public BaseResponse()
+        {
+            Data = default(T);
+            Message = "";
+            StatusCode = 200;
+            IsSuccessful = true;
+        }
+        
         /// <summary>
         /// 
         /// </summary>

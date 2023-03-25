@@ -1,6 +1,7 @@
 using System.Text;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
+using Sentry;
 
 namespace Pdam.Common.Shared.Http;
 
@@ -37,7 +38,6 @@ public class HttpService : IHttpService
         var response = await _client.SendAsync(request);
             
         var result = await response.Content.ReadAsStringAsync();
-
         if (response.IsSuccessStatusCode)
         {
             return HttpServiceResult<T>.Ok(JsonConvert.DeserializeObject<T>(result) ?? throw new InvalidOperationException(), (int)response.StatusCode);
