@@ -1,3 +1,5 @@
+using Pdam.Common.Shared.Security;
+
 namespace Pdam.Common.Shared.Http;
 
 /// <summary>
@@ -16,4 +18,21 @@ public interface IHttpService
     /// <returns></returns>
     Task<HttpServiceResult<T>> PostAsJson<T, T2>(Uri uri, T2 resource, Action<HttpRequestMessage>? action = null)
         where T : class;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="loginRequest"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    Task<HttpServiceResult<LoginResponse>> DoLogin(LoginRequest loginRequest, Action<HttpRequestMessage>? action = null);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="refreshTokenRequest"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    Task<HttpServiceResult<LoginResponse>> RefreshToken(RefreshTokenRequest refreshTokenRequest,
+        Action<HttpRequestMessage>? action = null);
 }

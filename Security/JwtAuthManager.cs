@@ -28,6 +28,7 @@ public class JwtAuthManager : IJwtAuthManager
     internal const string CLAIM_TYPE_ROLE = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
     internal const string CLAIM_TYPE_UID = "uid";
     internal const string CLAIM_USER_TYPE = "stype";
+    internal const string CLAIM_EXPIRED = "exp";
     /// <summary>
     /// 
     /// </summary>
@@ -177,9 +178,35 @@ public class JwtAuthManager : IJwtAuthManager
     /// <returns></returns>
     public AuthenticationInfo Authenticate()
     {
-        
-        var token = _httpContextAccessor.GetToken();
-        var jwtToken = DecodeJwtToken(token);
-        return AuthenticationInfo.Validate(jwtToken);
+
+        try
+        {
+            var token = _httpContextAccessor.GetToken();
+            var jwtToken = DecodeJwtToken(token);
+            return AuthenticationInfo.Validate(jwtToken);
+        }
+        catch (Exception)
+        {
+            return new AuthenticationInfo
+            {
+                IsValid = false
+            };
+        }
+    }
+
+    public AuthenticationInfo Authenticate(string token)
+    {
+        try
+        {
+            var jwtToken = DecodeJwtToken(token);
+            return AuthenticationInfo.Validate(jwtToken);
+        }
+        catch (Exception)
+        {
+            return new AuthenticationInfo
+            {
+                IsValid = false
+            };
+        }
     }
 }

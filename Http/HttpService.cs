@@ -1,7 +1,7 @@
 using System.Text;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
-using Sentry;
+using Pdam.Common.Shared.Security;
 
 namespace Pdam.Common.Shared.Http;
 
@@ -48,5 +48,47 @@ public class HttpService : IHttpService
         return failedJson != null
             ? HttpServiceResult<T>.Fail(failedJson.Description, failedJson.ErrorCode, (int)response.StatusCode)
             : HttpServiceResult<T>.Fail($"Error occurred while performing post to {uri}: {response} - {result}", null, (int)response.StatusCode);
+    }
+
+    public async Task<HttpServiceResult<LoginResponse>> DoLogin(LoginRequest loginRequest, Action<HttpRequestMessage>? action = null)
+    {
+        var uri = new Uri(Environment.GetEnvironmentVariable("AUTH_URL") + "account/login");
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        action?.Invoke(request);
+
+        request.Content = new StringContent(JsonConvert.SerializeObject(loginRequest), Encoding.UTF8, "application/json");
+        var response = await _client.SendAsync(request);
+        
+        var result = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            return HttpServiceResult<LoginResponse>.Ok(JsonConvert.DeserializeObject<LoginResponse>(result) ?? throw new InvalidOperationException(), (int)response.StatusCode);
+        }
+        
+        var failedJson = JsonConvert.DeserializeObject<ErrorDetail>(result);
+        return failedJson != null
+            ? HttpServiceResult<LoginResponse>.Fail(failedJson.Description, failedJson.ErrorCode, (int)response.StatusCode)
+            : HttpServiceResult<LoginResponse>.Fail($"Error occurred while performing post to {uri}: {response} - {result}", null, (int)response.StatusCode);
+    }
+    
+    public async Task<HttpServiceResult<LoginResponse>> RefreshToken(RefreshTokenRequest refreshTokenRequest, Action<HttpRequestMessage>? action = null)
+    {
+        var uri = new Uri(Environment.GetEnvironmentVariable("AUTH_URL") + "account/refresh-token");
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        action?.Invoke(request);
+
+        request.Content = new StringContent(JsonConvert.SerializeObject(refreshTokenRequest), Encoding.UTF8, "application/json");
+        var response = await _client.SendAsync(request);
+        
+        var result = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            return HttpServiceResult<LoginResponse>.Ok(JsonConvert.DeserializeObject<LoginResponse>(result) ?? throw new InvalidOperationException(), (int)response.StatusCode);
+        }
+        
+        var failedJson = JsonConvert.DeserializeObject<ErrorDetail>(result);
+        return failedJson != null
+            ? HttpServiceResult<LoginResponse>.Fail(failedJson.Description, failedJson.ErrorCode, (int)response.StatusCode)
+            : HttpServiceResult<LoginResponse>.Fail($"Error occurred while performing post to {uri}: {response} - {result}", null, (int)response.StatusCode);
     }
 }

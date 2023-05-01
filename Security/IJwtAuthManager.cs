@@ -69,4 +69,6 @@ public interface IJwtAuthManager
     /// </summary>
     /// <returns></returns>
     AuthenticationInfo Authenticate();
+
+    AuthenticationInfo Authenticate(string jwtToken);
 }
