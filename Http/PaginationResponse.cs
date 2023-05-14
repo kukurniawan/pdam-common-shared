@@ -27,6 +27,22 @@ public class PaginationResponse<T> : PaginationRequest
         _totalCount = totalCount;
         SortBy = sortBy;
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="items"></param>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="totalCount"></param>
+    /// <param name="sortBy"></param>
+    public PaginationResponse(IEnumerable<T> items, int page, int pageSize, int totalCount)
+    {
+        _items = items;
+        _page = page;
+        _pageSize = pageSize;
+        _totalCount = totalCount;
+    }
     /// <summary>
     /// 
     /// </summary>

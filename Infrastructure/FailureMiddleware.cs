@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Pdam.Common.Shared.Fault;
 using Sentry;
