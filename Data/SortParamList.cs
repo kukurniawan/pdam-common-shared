@@ -63,6 +63,25 @@ public class SortParamList : IList<SortParam>
         });
         return this;
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public SortParamList AddBaseType(Type type)
+    {
+        var properties = type.GetProperties();
+        foreach (var property in properties)
+        {
+            _list.Add(new SortParam
+            {
+                ColumnName = property.Name, SortColumn = property.Name
+            });    
+        }
+        return this;
+    }
+
 
     /// <summary>
     /// get array of column name

@@ -20,6 +20,6 @@ public class PaginationRequest
     /// <summary>
     /// 
     /// </summary>
-    [DefaultValue("CreatedDate asc")]
-    public string SortBy { get; set; } = "CreatedDate asc";
+    [DefaultValue("CreatedDate DESC")]
+    public string SortBy { get; set; } = "CreatedDate DESC";
 }
