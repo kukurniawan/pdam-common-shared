@@ -8,7 +8,7 @@ namespace Pdam.Common.Shared.Data;
 /// <summary>
 /// lambda helper
 /// </summary>
-public class LambdaHelper
+public static class LambdaHelper
 {
     /// <summary>
     /// 
@@ -62,9 +62,10 @@ public class LambdaHelper
     /// <param name="obj"></param>
     /// <param name="mapper"></param>
     /// <param name="filters"></param>
+    /// <param name="logicalFilterOperator"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static Tuple<string, object[]> GetDynamicWhereTerm<T>(T obj, SortParamList mapper, IEnumerable<FilterDescriptor>? filters) where T : class
+    public static Tuple<string, object[]> GetDynamicWhereTerm<T>(T obj, SortParamList mapper, IEnumerable<FilterDescriptor>? filters, LogicalFilterOperator logicalFilterOperator) where T : class
     {
         var s = new StringBuilder();
         var f = new List<object>();
@@ -73,7 +74,8 @@ public class LambdaHelper
             !string.Equals(x.Name, "Page", StringComparison.CurrentCultureIgnoreCase) &&
             !string.Equals(x.Name, "Skip", StringComparison.CurrentCultureIgnoreCase) &&
             !string.Equals(x.Name, "Top", StringComparison.CurrentCultureIgnoreCase) &&
-            !string.Equals(x.Name, "Filters", StringComparison.CurrentCultureIgnoreCase) &&
+            !string.Equals(x.Name, "Filters", StringComparison.CurrentCultureIgnoreCase) && 
+            !string.Equals(x.Name, "LogicalFilterOperatorByField", StringComparison.CurrentCultureIgnoreCase) &&
             !string.Equals(x.Name, "PageSize", StringComparison.CurrentCultureIgnoreCase));
         var counter = 0;
         foreach (var property in g.Where(x=> !mapper.Select(c=>c.ColumnName).Contains(x.Name)))
@@ -111,7 +113,7 @@ public class LambdaHelper
         {
             if (mapper.Any(x => x.ColumnName == filter.Property))
             {
-                if (s.Length > 0 /*&& (index + 1) < filterDescriptors.Count*/) s.Append(" AND ");
+                if (s.Length > 0 /*&& (index + 1) < filterDescriptors.Count*/) s.Append( logicalFilterOperator == LogicalFilterOperator.And ? " AND " : " OR ");
                 var column = mapper.FirstOrDefault(x => x.ColumnName == filter.Property);
                 if (column == null) continue;
                 var param1 = GenerateLinqDynamic(column, filter.FilterOperator, counter);
