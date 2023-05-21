@@ -2,8 +2,16 @@
 
 namespace Pdam.Common.Shared.Security;
 
+/// <summary>
+/// 
+/// </summary>
 public class ApplicationSettings
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <exception cref="InvalidOperationException"></exception>
     public ApplicationSettings(IConfiguration configuration)
     {
         JwtCookieName = configuration.GetSection("JwtCookieName").Value ?? throw new InvalidOperationException();
@@ -15,12 +23,36 @@ public class ApplicationSettings
         PassPhase = configuration.GetSection("PassPhaseKey").Value ?? throw new InvalidOperationException();
         CompanyIdKey = configuration.GetSection("CompanyIdKey").Value ?? throw new InvalidOperationException();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public string JwtCookieName { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string RefreshTokenCookieName { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string RefreshTokenEncryptionPassPhrase { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public double CookieExpirationHours { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public double SessionRefreshHours { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string ApplicationKey { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string PassPhase { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string CompanyIdKey { get; set; }
 }
