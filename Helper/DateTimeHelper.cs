@@ -1,3 +1,5 @@
+using System;
+
 namespace Pdam.Common.Shared.Helper;
 
 /// <summary>

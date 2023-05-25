@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
 namespace Pdam.Common.Shared.Logging
