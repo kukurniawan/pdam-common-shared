@@ -1,4 +1,6 @@
-﻿namespace Pdam.Common.Shared.Http;
+﻿using System.Collections.Generic;
+
+namespace Pdam.Common.Shared.Http;
 
 /// <summary>
 /// 

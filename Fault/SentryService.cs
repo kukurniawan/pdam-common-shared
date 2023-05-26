@@ -1,3 +1,4 @@
+using System;
 using Sentry;
 
 namespace Pdam.Common.Shared.Fault;

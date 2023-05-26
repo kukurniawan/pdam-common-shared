@@ -1,6 +1,9 @@
 ﻿
 
 // ReSharper disable CheckNamespace
+
+using System;
+
 namespace Pdam.Common.Shared.Logging
     // ReSharper restore CheckNamespace
 {

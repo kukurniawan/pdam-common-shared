@@ -1,4 +1,6 @@
-﻿namespace Pdam.Common.Shared.Security;
+﻿using System;
+
+namespace Pdam.Common.Shared.Security;
 
 public class LoginResponse
 {

@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace Pdam.Common.Shared.Security;
