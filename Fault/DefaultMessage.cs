@@ -68,7 +68,7 @@ namespace Pdam.Common.Shared.Fault
         /// <summary>
         /// 
         /// </summary>
-        public const string DEFAULT_ERROR_ON_INSERT_OR_UPDATE = "Gagal memasukkan/memperbarui data, harap hubungi sistem administrator Anda.";
+        public const string DEFAULT_ERROR_ON_INSERT_OR_UPDATE = "Gagal input baru atau update data, harap hubungi sistem administrator anda.";
     }
 
     /// <summary>

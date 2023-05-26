@@ -10,11 +10,24 @@ public class CookiesHelper
     private readonly ApplicationSettings _applicationSettings;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="applicationSettings"></param>
+    /// <param name="httpContextAccessor"></param>
     public CookiesHelper(ApplicationSettings applicationSettings, IHttpContextAccessor httpContextAccessor)
     {
         _applicationSettings = applicationSettings;
         _httpContextAccessor = httpContextAccessor;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="jwtToken"></param>
+    /// <param name="refreshToken"></param>
+    /// <param name="applicationUid"></param>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
     public static string CreateUrl(string jwtToken, string refreshToken, string applicationUid, string companyId)
     {
         return $"?jwtToken={Uri.EscapeDataString(jwtToken)}&refreshToken={Uri.EscapeDataString(refreshToken)}&" +

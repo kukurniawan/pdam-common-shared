@@ -70,5 +70,16 @@ public interface IJwtAuthManager
     /// <returns></returns>
     AuthenticationInfo Authenticate();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="jwtToken"></param>
+    /// <returns></returns>
     AuthenticationInfo Authenticate(string jwtToken);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="roles"></param>
+    /// <returns></returns>
+    string IsAuthorized(params string[] roles);
 }

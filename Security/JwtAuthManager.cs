@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -180,7 +181,6 @@ public class JwtAuthManager : IJwtAuthManager
     /// <returns></returns>
     public AuthenticationInfo Authenticate()
     {
-
         try
         {
             var token = _httpContextAccessor.GetToken();
@@ -196,6 +196,11 @@ public class JwtAuthManager : IJwtAuthManager
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public AuthenticationInfo Authenticate(string token)
     {
         try
@@ -210,5 +215,21 @@ public class JwtAuthManager : IJwtAuthManager
                 IsValid = false
             };
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="roles"></param>
+    /// <returns></returns>
+    /// <exception cref="ApiException"></exception>
+    public string IsAuthorized(params string[] roles)
+    {
+        var claims = GetClaim(CLAIM_TYPE_ROLE);
+        var userRoles = claims.Split(";").Select(x=>x.ToLower()).ToList();
+        var mRoles = roles.Select(x => x.ToLower()).ToList();
+        if (userRoles.Contains("administrator")) return GetClaim(CLAIM_USER_NAME);
+        if (mRoles.Any(role => userRoles.Contains(role))) return GetClaim(CLAIM_USER_NAME);
+        throw new ApiException(HttpStatusCode.Unauthorized, "Anda tidak memiliki akses", "404");
     }
 }

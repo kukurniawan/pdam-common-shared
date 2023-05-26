@@ -31,6 +31,8 @@ public static class PdamSupport
         /// </summary>
         public const string NewRequestAcceptedMessage =
             "Pengajuan Pemasangan baru telah diterima dan sedang diproses, silahkan tunggu";
+
+        internal const string DEFAULT_EMPTY = "DEFAULT";
     }
     
     /*
