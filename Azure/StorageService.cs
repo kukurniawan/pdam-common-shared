@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
@@ -11,27 +8,26 @@ namespace Pdam.Common.Shared.Azure;
 /// </summary>
 public class StorageService : IFileService
 {
-    
     /// <summary>
     /// update blog file
     /// </summary>
     /// <param name="sourceBase64"></param>
     /// <param name="fileName"></param>
     /// <param name="container"></param>
+    /// <param name="changeFile"></param>
     /// <param name="access"></param>
     /// <returns></returns>
-    public async Task<string> UploadFile(string sourceBase64, string fileName, string container,  string access = "Private")
+    public async Task<string> UploadFile(string sourceBase64, string fileName, string container, bool changeFile = true, string access = "Private")
     {
         var filetype = Path.GetExtension(fileName).ToLower();
-
-        var storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString");
+        var storageConnectionString =  Environment.GetEnvironmentVariable("StorageConnectionString");
         //var cdnStorageUrl = Environment.GetEnvironmentVariable("CdnStorageUrl");
         var imageSource = Convert.FromBase64String(sourceBase64);
 
         using var stream = new MemoryStream(imageSource);
         var blobContainer = new BlobContainerClient(storageConnectionString, container);
         await blobContainer.CreateIfNotExistsAsync();
-        var guidId = Guid.NewGuid().ToString();
+        var guidId = changeFile ? Guid.NewGuid() + filetype : fileName;
         var blobClient = blobContainer.GetBlobClient(guidId + filetype);
 
         await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = GetContentType(filetype) });
@@ -41,6 +37,36 @@ public class StorageService : IFileService
         }
         return blobClient.Uri.ToString();
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="imageSource"></param>
+    /// <param name="fileName"></param>
+    /// <param name="container"></param>
+    /// <param name="changeFile"></param>
+    /// <param name="access"></param>
+    /// <returns></returns>
+    public async Task<string> UploadFile(byte[] imageSource, string fileName, string container, bool changeFile = true,  string access = "Private")
+    {
+        var filetype = Path.GetExtension(fileName).ToLower();
+        var storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString");
+        //var cdnStorageUrl = Environment.GetEnvironmentVariable("CdnStorageUrl");
+
+        using var stream = new MemoryStream(imageSource);
+        var blobContainer = new BlobContainerClient(storageConnectionString, container);
+        await blobContainer.CreateIfNotExistsAsync();
+        var guidId = changeFile ? Guid.NewGuid() + filetype : fileName;
+        var blobClient = blobContainer.GetBlobClient(guidId);
+        
+        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = GetContentType(filetype) });
+        if (access == "Public")
+        {
+            await blobContainer.SetAccessPolicyAsync(PublicAccessType.Blob);
+        }
+        return blobClient.Uri.ToString();
+    }
+
     
     private static string GetContentType(string filetype)
     {

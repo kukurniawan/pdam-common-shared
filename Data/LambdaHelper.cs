@@ -81,6 +81,11 @@ public static class LambdaHelper
             !string.Equals(x.Name, "LogicalFilterOperatorByField", StringComparison.CurrentCultureIgnoreCase) &&
             !string.Equals(x.Name, "PageSize", StringComparison.CurrentCultureIgnoreCase));
         var counter = 0;
+        foreach (var propertyInfo in g)
+        {
+            if (mapper.Any(x=>x.ColumnName == propertyInfo.Name)) continue;
+            Console.WriteLine(propertyInfo.Name);
+        }
         foreach (var property in g.Where(x=> !mapper.Select(c=>c.ColumnName).Contains(x.Name)))
         {
             var name = property.Name;
@@ -90,10 +95,10 @@ public static class LambdaHelper
             var dataType = property.PropertyType.Name.ToLower();
             //if (dataType == "datetime") continue;
             if (counter != 0)
-                s.Append(" OR ");
+                s.Append(" AND ");
             if (dataType == "string")
                 s.Append($"{name}.Contains(@{counter})");
-            if (dataType == "datetime")
+            else if (dataType == "datetime")
             {
                 if (name.ToLower() == "modifieddate")
                     s.Append($"{name} <= @{counter}");

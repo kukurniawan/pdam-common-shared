@@ -23,7 +23,20 @@ public class ApplicationSettings
         ApplicationKey = configuration.GetSection("ApplicationKey").Value ?? throw new InvalidOperationException();
         PassPhase = configuration.GetSection("PassPhaseKey").Value ?? throw new InvalidOperationException();
         CompanyIdKey = configuration.GetSection("CompanyIdKey").Value ?? throw new InvalidOperationException();
+        StorageUrl =  configuration.GetSection("StorageUrl").Value ?? string.Empty;
+        StorageAccessToken =  configuration.GetSection("StorageAccessToken").Value ?? string.Empty;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string StorageAccessToken { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string StorageUrl { get; set; }
+
     /// <summary>
     /// 
     /// </summary>

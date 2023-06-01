@@ -38,7 +38,7 @@ namespace Pdam.Common.Shared.Fault
                 var result = await validator.Validate(request);
 
                 if (!result.IsSuccessful)
-                    throw new ApiException(HttpStatusCode.UnprocessableEntity, result.ErrorDescription, result.ErrorCode);
+                    throw new ApiException(HttpStatusCode.BadRequest, result.ErrorDescription, result.ErrorCode);
             }
 
             return await next();
