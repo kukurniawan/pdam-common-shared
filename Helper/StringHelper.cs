@@ -84,5 +84,43 @@ namespace Pdam.Common.Shared.Helper
             if (string.IsNullOrEmpty(value)) return null;
             return new Guid(value);
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static decimal? ToNullableDecimal(this string? value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) return null;
+                return Convert.ToDecimal(value);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool? ToNullableBoolean(this string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value)) return null;
+                return value == "1" || value.ToLower() == "true";
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
     }
 }

@@ -43,7 +43,7 @@ public static class LambdaHelper
                 s.Append(" AND ");
             if (dataType == "string")
                 s.Append($"{name}.Contains(@{counter})");
-            if (dataType == "datetime")
+            else if (dataType == "datetime")
             {
                 if (name.ToLower() == "modifieddate")
                     s.Append($"{name} <= @{counter}");
