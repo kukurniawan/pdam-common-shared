@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Pdam.Common.Shared.Security;
 
 namespace Pdam.Common.Shared.Http;
