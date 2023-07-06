@@ -66,8 +66,12 @@ public static class PdamSupport
     /// <summary>
     /// 
     /// </summary>
-    public static ErrorDetail NoActiveSpk =>
-        new ErrorDetail("SPK tidak ditemukan", "1706", HttpStatusCode.UnprocessableEntity);
+    public static ErrorDetail NoActiveSpk => new ErrorDetail("SPK tidak ditemukan", "1706", HttpStatusCode.UnprocessableEntity);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static ErrorDetail DataNotFound => new ErrorDetail("Data tidak ditemukan", "1707", HttpStatusCode.UnprocessableEntity);
 }
 
 /// <summary>
