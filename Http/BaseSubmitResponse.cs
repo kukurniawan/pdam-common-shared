@@ -1,4 +1,6 @@
-﻿namespace Pdam.Common.Shared.Http;
+﻿using System;
+
+namespace Pdam.Common.Shared.Http;
 
 /// <summary>
 /// 
