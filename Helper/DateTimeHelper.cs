@@ -17,4 +17,17 @@ public static class DateTimeHelper
         var s = $"{value.Year}{value.Month:D2}";
         return Convert.ToInt32(s);
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static DateTime ToSEAsiaStandardTime(this DateTime value)
+    {
+        var specifyKind = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+        var gmt7Time = TimeZoneInfo.ConvertTime(specifyKind, timeZoneInfo);
+        return gmt7Time;
+    }
 }

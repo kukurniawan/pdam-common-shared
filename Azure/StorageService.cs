@@ -1,5 +1,8 @@
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Sas;
 
 namespace Pdam.Common.Shared.Azure;
 
@@ -67,7 +70,77 @@ public class StorageService : IFileService
         return blobClient.Uri.ToString();
     }
 
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="container"></param>
+    /// <param name="blobName"></param>
+    /// <returns></returns>
+    public static string GetAccessToken(string container, string blobName)
+    {
+        var storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString");
+        var blobServiceClient = new BlobServiceClient(storageConnectionString);
+
+        //  Gets a reference to the container.
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient(container);
+
+        //  Gets a reference to the blob in the container
+        var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+        //  Defines the resource being accessed and for how long the access is allowed.
+        var blobSasBuilder = new BlobSasBuilder
+        {
+            StartsOn = DateTime.UtcNow, 
+            ExpiresOn = DateTime.UtcNow.AddMinutes(10),
+            BlobContainerName = blobClient.GetParentBlobContainerClient().Name,
+            Resource = "b",
+            Protocol = SasProtocol.Https
+        };
+        //  Defines the type of permission.
+        blobSasBuilder.SetPermissions(BlobSasPermissions.Read);
+       
+        var keys = GetSharedKey();
+        //  Builds an instance of StorageSharedKeyCredential      
+        var storageSharedKeyCredential = new StorageSharedKeyCredential(keys.Item1, keys.Item2 + "==");
+
+        //  Builds the Sas URI.
+        var sasQueryParameters = blobSasBuilder.ToSasQueryParameters(storageSharedKeyCredential);
+        return blobName + "?" + sasQueryParameters;
+    }
+
+    /// <summary>
+    /// split storage connection string into account name and account key
+    /// </summary>
+    /// <returns>
+    /// 1. Account name
+    /// 2. Account key
+    /// </returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    private static (string, string) GetSharedKey()
+    {
+        var storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString");
+        if (storageConnectionString == null) throw new InvalidOperationException("Storage Connection String is null");
+        
+        var strings = storageConnectionString.Split(';');
+        var accountName = string.Empty;
+        var accountKey = string.Empty;
+
+        foreach (var s in strings)
+        {
+            var split = s.Split('=');
+            switch (split[0])
+            {
+                case "AccountName":
+                    accountName = split[1];
+                    break;
+                case "AccountKey":
+                    accountKey = split[1];
+                    break;
+            }
+        }
+        return (accountName, accountKey);
+    }
     private static string GetContentType(string filetype)
     {
         switch (filetype)
