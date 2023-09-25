@@ -74,6 +74,27 @@ public class HttpService : IHttpService
             : HttpServiceResult<LoginResponse>.Fail($"Error occurred while performing post to {uri}: {response} - {result}", null, (int)response.StatusCode);
     }
     
+    public async Task<HttpServiceResult<LoginResponse>> Register(RegisterRequest registerRequest, Action<HttpRequestMessage>? action = null)
+    {
+        var uri = new Uri(Environment.GetEnvironmentVariable("AUTH_URL") + "account/register");
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        action?.Invoke(request);
+
+        request.Content = new StringContent(JsonConvert.SerializeObject(registerRequest), Encoding.UTF8, "application/json");
+        var response = await _client.SendAsync(request);
+        
+        var result = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            return HttpServiceResult<LoginResponse>.Ok(JsonConvert.DeserializeObject<LoginResponse>(result) ?? throw new InvalidOperationException(), (int)response.StatusCode);
+        }
+        
+        var failedJson = JsonConvert.DeserializeObject<ErrorDetail>(result);
+        return failedJson != null
+            ? HttpServiceResult<LoginResponse>.Fail(failedJson.Description, failedJson.ErrorCode, (int)response.StatusCode)
+            : HttpServiceResult<LoginResponse>.Fail($"Error occurred while performing post to {uri}: {response} - {result}", null, (int)response.StatusCode);
+    }
+    
     public async Task<HttpServiceResult<LoginResponse>> RefreshToken(RefreshTokenRequest refreshTokenRequest, Action<HttpRequestMessage>? action = null)
     {
         var uri = new Uri(Environment.GetEnvironmentVariable("AUTH_URL") + "account/refresh-token");

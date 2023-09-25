@@ -12,6 +12,11 @@ public class LoginRequest : IRequest<LoginResponse>
     /// 
     /// </summary>
     [Required]
+    public string UserType { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Required]
     public string Email { get; set; }
     /// <summary>
     /// 

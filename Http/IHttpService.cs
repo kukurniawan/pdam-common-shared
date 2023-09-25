@@ -29,6 +29,14 @@ public interface IHttpService
     /// <param name="action"></param>
     /// <returns></returns>
     Task<HttpServiceResult<LoginResponse>> DoLogin(LoginRequest loginRequest, Action<HttpRequestMessage>? action = null);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="registerRequest"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    Task<HttpServiceResult<LoginResponse>> Register(RegisterRequest loginRequest, Action<HttpRequestMessage>? action = null);
 
     /// <summary>
     /// 
