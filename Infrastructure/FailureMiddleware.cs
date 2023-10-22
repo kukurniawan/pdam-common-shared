@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -49,6 +46,18 @@ namespace Pdam.Common.Shared.Infrastructure
                 logger.LogError(exception.Message, exception, DefaultEventId.DbUpdateConcurrencyException);
                 SentrySdk.CaptureException(exception);
             }
+            catch (UnauthorizedAccessException unauthorizedAccessException)
+            {
+                logger.LogError(unauthorizedAccessException, unauthorizedAccessException.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                error = new ErrorDetail
+                {
+                    ErrorCode = HttpStatusCode.Unauthorized.ToString(),
+                    Description = unauthorizedAccessException.Message,
+                    StatusCode =  HttpStatusCode.Unauthorized
+                };
+                SentrySdk.CaptureException(unauthorizedAccessException);
+            }
             catch (ApiException apiException)
             {
                 logger.LogError(apiException, apiException.EventId);
@@ -86,6 +95,7 @@ namespace Pdam.Common.Shared.Infrastructure
                     ErrorCode = "401",
                     StatusCode = HttpStatusCode.Unauthorized
                 }));
+                return;
             }
             
             if ( string.Compare(context.Response.ContentType, "image/png", StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -104,10 +114,6 @@ namespace Pdam.Common.Shared.Infrastructure
             {
                 context.Response.ContentType = "application/json;charset=utf-8";
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(error));
-            }
-            else
-            {
-                await context.Response.WriteAsync(readToEnd);
                 return;
             }
 
@@ -123,8 +129,7 @@ namespace Pdam.Common.Shared.Infrastructure
                 await context.Response.WriteAsync(readToEnd);
                 return;
             }
-
-            context.Response.ContentType = "text";
+            //context.Response.ContentType = "text";
             await context.Response.WriteAsync(readToEnd);
         }
     }
