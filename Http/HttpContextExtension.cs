@@ -22,16 +22,34 @@ public static class HttpContextExtension
         return accessToken.Value.ToString().Split(" ")[1];
     }
     
-    public static string GetIpAddress(this IHttpContextAccessor httpContextAccessor)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
+    /// <returns></returns>
+    public static string? GetIpAddress(this IHttpContextAccessor httpContextAccessor)
     {
         try
         {
-            return httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            return httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e);
             return "0.0.0.0";
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="claimType"></param>
+    /// <returns></returns>
+    /// <exception cref="SecurityTokenException"></exception>
+    public static string GetClaim(this IHttpContextAccessor httpContextAccessor, string claimType)
+    {
+        var claim = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimType);
+        if (claim is null) throw new SecurityTokenException(DefaultMessage.InvalidClaim);
+        return claim.Value;
     }
 }
