@@ -36,6 +36,7 @@ public class JwtAuthManager : IJwtAuthManager
     internal const string CLAIM_EXPIRED = "exp";
     internal const string CLAIM_USER_NAME = "sname";
     internal const string CLAIM_ROLES = "srole";
+    internal const string CLAIM_BRANCH = "branchName";
     /// <summary>
     /// 
     /// </summary>
