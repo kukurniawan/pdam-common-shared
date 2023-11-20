@@ -18,6 +18,12 @@ public static class DateTimeHelper
         return Convert.ToInt32(s);
     }
     
+    public static int ToPeriodYear(this DateTime value)
+    {
+        var s = $"{value.Year}00";
+        return Convert.ToInt32(s);
+    }
+    
     /// <summary>
     /// 
     /// </summary>
