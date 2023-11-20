@@ -15,14 +15,14 @@ public class ApplicationSettings
     /// <exception cref="InvalidOperationException"></exception>
     public ApplicationSettings(IConfiguration configuration)
     {
-        JwtCookieName = configuration.GetSection("JwtCookieName").Value ?? throw new InvalidOperationException();
-        RefreshTokenCookieName = configuration.GetSection("RefreshTokenCookieName").Value ?? throw new InvalidOperationException();
-        RefreshTokenEncryptionPassPhrase = configuration.GetSection("RefreshTokenEncryptionPassPhrase").Value ?? throw new InvalidOperationException();
+        JwtCookieName = configuration.GetSection("JwtCookieName").Value ?? string.Empty;
+        RefreshTokenCookieName = configuration.GetSection("RefreshTokenCookieName").Value ?? string.Empty;
+        RefreshTokenEncryptionPassPhrase = configuration.GetSection("RefreshTokenEncryptionPassPhrase").Value ?? string.Empty;
         CookieExpirationHours = Convert.ToDouble(configuration.GetSection("CookieExpirationHours").Value);
         SessionRefreshHours = Convert.ToDouble(configuration.GetSection("SessionRefreshHours").Value);
-        ApplicationKey = configuration.GetSection("ApplicationKey").Value ?? throw new InvalidOperationException();
-        PassPhase = configuration.GetSection("PassPhaseKey").Value ?? throw new InvalidOperationException();
-        CompanyIdKey = configuration.GetSection("CompanyIdKey").Value ?? throw new InvalidOperationException();
+        ApplicationKey = configuration.GetSection("ApplicationKey").Value ?? string.Empty;
+        PassPhase = configuration.GetSection("PassPhaseKey").Value ?? string.Empty;
+        CompanyIdKey = configuration.GetSection("CompanyIdKey").Value ?? string.Empty;
         StorageUrl =  configuration.GetSection("StorageUrl").Value ?? string.Empty;
         StorageAccessToken =  configuration.GetSection("StorageAccessToken").Value ?? string.Empty;
     }

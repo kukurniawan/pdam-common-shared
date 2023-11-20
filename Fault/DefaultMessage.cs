@@ -11,7 +11,7 @@ namespace Pdam.Common.Shared.Fault
         /// <summary>
         /// 
         /// </summary>
-        public const string ErrorMessage = "Something went wrong. Please try again in a few minutes or contact your support team";
+        public const string ErrorMessage = "Terjadi kesalahan pada server kami, silahkan coba lagi atau hubungi tim support WMI";
         /// <summary>
         /// 
         /// </summary>
