@@ -3,6 +3,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
+using System.Globalization;
 
 namespace Pdam.Common.Shared.Azure;
 
@@ -39,6 +40,56 @@ public class StorageService : IFileService
             await blobContainer.SetAccessPolicyAsync(PublicAccessType.Blob);
         }
         return blobClient.Uri.ToString();
+    }
+
+    /// <summary>
+    /// update backup data
+    /// </summary>
+    /// <param name="sourceBase64"></param>
+    /// <param name="fileName"></param>
+    /// <param name="fileType"></param>
+    /// <param name="container"></param>
+    /// <returns></returns>
+    public async Task<string> UploadBackup(string sourceBase64, string fileName, string fileType, string container)
+    {
+        var storageConnectionString =  Environment.GetEnvironmentVariable("StorageConnectionString");
+        var backupFolder =  Environment.GetEnvironmentVariable("BackupFolder");
+        var imageSource = Convert.FromBase64String(sourceBase64);
+
+        using var stream = new MemoryStream(imageSource);
+        var blobContainer = new BlobContainerClient(storageConnectionString, container);
+        await blobContainer.CreateIfNotExistsAsync();
+        var blobClient = blobContainer.GetBlobClient($"{(!string.IsNullOrEmpty(backupFolder) ? $"{backupFolder}/" : "")}{fileName}{fileType}");
+        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = GetContentType(fileType) });
+        return blobClient.Uri.ToString();
+    }
+
+    /// <summary>
+    /// list backup data
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="container"></param>
+    /// <returns></returns>
+    public async Task<List<BlobModel>> ListBackup(string key, string container)
+    {
+        var result = new List<BlobModel>();
+
+        var storageConnectionString =  Environment.GetEnvironmentVariable("StorageConnectionString");
+        var backupFolder =  Environment.GetEnvironmentVariable("BackupFolder");
+
+        var blobContainer = new BlobContainerClient(storageConnectionString, container);
+        var blobHierarchyItems = blobContainer.GetBlobsByHierarchyAsync(BlobTraits.None, BlobStates.None, "/", $"{backupFolder}/{key}/");
+
+        string containerUrl = blobContainer.Uri.ToString();
+
+        await foreach (var blobHierarchyItem in blobHierarchyItems)
+        {
+            result.Add(new BlobModel { 
+                Name = blobHierarchyItem.Blob.Name,
+                Url = $"{containerUrl}/{blobHierarchyItem.Blob.Name}"
+            });
+        }
+        return result;
     }
 
     /// <summary>
