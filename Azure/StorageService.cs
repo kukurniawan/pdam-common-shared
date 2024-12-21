@@ -77,8 +77,9 @@ public class StorageService : IFileService
     /// <param name="container"></param>
     /// <param name="blobName"></param>
     /// <returns></returns>
-    public static string GetAccessToken(string container, string blobName)
+    public static string GetAccessToken(string container, string? blobName)
     {
+        if (string.IsNullOrEmpty(blobName)) return string.Empty;
         var storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString");
         var blobServiceClient = new BlobServiceClient(storageConnectionString);
 
@@ -143,30 +144,16 @@ public class StorageService : IFileService
     }
     private static string GetContentType(string filetype)
     {
-        switch (filetype)
+        return filetype switch
         {
-            case ".pdf":
-                return "application/pdf";
-            case ".doc":
-            case ".docx":
-                return "application/msword";
-            case ".xls":
-            case ".xlsx":
-                return "application/vnd.ms-excel";
-            case ".jpg":
-            case ".gif":
-            case ".png":
-            case ".bmp":
-            case ".jpeg":
-                return "image/" + filetype.Replace(".", "");
-            case ".mp4":
-                return "video/mp4";
-            case ".svg":
-                return "image/svg+xml";
-            case ".webp":
-                return "image/webp";
-            default:
-                return "text/plain";
-        }
+            ".pdf" => "application/pdf",
+            ".doc" or ".docx" => "application/msword",
+            ".xls" or ".xlsx" => "application/vnd.ms-excel",
+            ".jpg" or ".gif" or ".png" or ".bmp" or ".jpeg" => "image/" + filetype.Replace(".", ""),
+            ".mp4" => "video/mp4",
+            ".svg" => "image/svg+xml",
+            ".webp" => "image/webp",
+            _ => "text/plain"
+        };
     }
 }
