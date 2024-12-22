@@ -91,6 +91,33 @@ public class StorageService : IFileService
         }
         return result;
     }
+    
+    /// <summary>
+    /// list backup data
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="container"></param>
+    /// <returns></returns>
+    public async Task<BlobModel?> GetBackup(string key, string container)
+    {
+        var storageConnectionString =  Environment.GetEnvironmentVariable("StorageConnectionString");
+        var backupFolder =  Environment.GetEnvironmentVariable("BackupFolder");
+
+        var blobContainer = new BlobContainerClient(storageConnectionString, container);
+        var blobHierarchyItems = blobContainer.GetBlobsByHierarchyAsync(BlobTraits.None, BlobStates.None, "/", $"{backupFolder}/{key}");
+
+        string containerUrl = blobContainer.Uri.ToString();
+
+        await foreach (var blobHierarchyItem in blobHierarchyItems)
+        {
+            return new BlobModel { 
+                Name = blobHierarchyItem.Blob.Name,
+                Url = $"{containerUrl}/{blobHierarchyItem.Blob.Name}"
+            };
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// 

@@ -39,6 +39,14 @@ public interface IFileService
     Task<List<BlobModel>> ListBackup(string key, string container);
 
     /// <summary>
+    /// list backup data
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="container"></param>
+    /// <returns></returns>
+    Task<BlobModel?> GetBackup(string key, string container);
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="imageSource"></param>
