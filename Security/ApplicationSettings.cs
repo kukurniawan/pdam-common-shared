@@ -16,6 +16,7 @@ public class ApplicationSettings
     public ApplicationSettings(IConfiguration configuration)
     {
         JwtCookieName = configuration.GetSection("JwtCookieName").Value ?? string.Empty;
+        RolesCookieName = configuration.GetSection("RolesCookieName").Value ?? string.Empty;
         RefreshTokenCookieName = configuration.GetSection("RefreshTokenCookieName").Value ?? string.Empty;
         RefreshTokenEncryptionPassPhrase = configuration.GetSection("RefreshTokenEncryptionPassPhrase").Value ?? string.Empty;
         CookieExpirationHours = Convert.ToDouble(configuration.GetSection("CookieExpirationHours").Value);
@@ -31,6 +32,11 @@ public class ApplicationSettings
     /// 
     /// </summary>
     public string StorageAccessToken { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string RolesCookieName { get; set; }
 
     /// <summary>
     /// 

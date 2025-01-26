@@ -35,7 +35,7 @@ public class CookiesHelper
         return $"?jwtToken={Uri.EscapeDataString(jwtToken)}&refreshToken={Uri.EscapeDataString(refreshToken)}&" +
                $"redirectUrl={Uri.EscapeDataString("/")}&uid={Uri.EscapeDataString(applicationUid)}&companyId={Uri.EscapeDataString(companyId)}";
     }
-    
+
     public static string CreateUrl(string jwtToken, string refreshToken, string applicationUid, string companyId, string redirectUrl)
     {
         return
