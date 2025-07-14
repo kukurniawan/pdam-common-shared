@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
 using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Pdam.Common.Shared.Azure;
 
